@@ -54,7 +54,8 @@ class SignUpControllerTest {
                 .andExpect(redirectedUrlPattern(ProfileController.BASE_URL + "*"))
         ;
 
-        Account account = accountRepository.findByUsername(TestAccount.USERNAME).orElseThrow(NoSuchElementException::new);
+        Account account = accountRepository.findByUsername(TestAccount.USERNAME);
+        assertThat(account).isNotNull();
         assertThat(account.getId()).isNotNull();
         assertThat(account.getUsername()).isEqualTo(TestAccount.USERNAME);
         assertThat(account.getEmail()).isEqualTo(TestAccount.EMAIL);
@@ -75,7 +76,7 @@ class SignUpControllerTest {
                 .andExpect(model().attributeHasFieldErrors("signUpForm", "username", "email", "password"))
         ;
 
-        Optional<Account> account = accountRepository.findByUsername(TestAccount.USERNAME);
-        assertThat(account).isEmpty();
+        Account account = accountRepository.findByUsername(TestAccount.USERNAME);
+        assertThat(account).isNull();
     }
 }

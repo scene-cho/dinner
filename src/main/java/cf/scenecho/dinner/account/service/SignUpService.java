@@ -21,10 +21,10 @@ public class SignUpService {
     }
 
     @Transactional
-    public Long processSignUp(SignUpForm signUpForm) {
+    public String processSignUp(SignUpForm signUpForm) {
         Account account = createAccount(signUpForm);
         account = accountRepository.save(account);
-        return account.getId();
+        return account.getUsername();
     }
 
     private Account createAccount(SignUpForm signUpForm) {

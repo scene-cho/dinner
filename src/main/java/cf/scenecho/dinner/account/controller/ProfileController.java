@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class ProfileController {
     public static final String BASE_URL = "/accounts/";
 
-    static final String URL = "/accounts/{id}";
+    static final String URL = "/accounts/{username}";
     static final String PROFILE_VIEW = "accounts/profile";
 
     private final ProfileService profileService;
@@ -23,10 +23,8 @@ public class ProfileController {
     }
 
     @GetMapping(URL)
-    public String showProfileRequest(@PathVariable Long id, Model model) {
-        // TODO
-        System.out.println("accounts/id" + id);
-        Account account = profileService.findAccount(id);
+    public String showProfileRequest(@PathVariable String username, Model model) {
+        Account account = profileService.findAccount(username);
         model.addAttribute(account);
         return PROFILE_VIEW;
     }

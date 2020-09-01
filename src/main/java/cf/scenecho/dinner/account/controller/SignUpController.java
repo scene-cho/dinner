@@ -35,7 +35,7 @@ public class SignUpController {
         if (errors.hasErrors()) {
             return FORM_VIEW;
         }
-        Long accountId = signUpService.processSignUp(signUpForm);
-        return "redirect:" + ProfileController.BASE_URL + accountId;
+        String username = signUpService.processSignUp(signUpForm);
+        return "redirect:" + ProfileController.BASE_URL + username;
     }
 }
