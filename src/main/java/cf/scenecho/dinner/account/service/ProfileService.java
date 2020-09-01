@@ -21,7 +21,13 @@ public class ProfileService {
 
     @Transactional
     public Account findAccount(Long id) {
+        // TODO
+        System.out.println("findAccount" + id);
+
         Optional<Account> account = accountRepository.findById(id);
+
+        System.out.println(account);
+
         return account.orElseThrow(NoSuchElementException::new);
     }
 }

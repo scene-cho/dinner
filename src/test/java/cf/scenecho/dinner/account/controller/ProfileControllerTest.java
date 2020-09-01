@@ -1,6 +1,6 @@
 package cf.scenecho.dinner.account.controller;
 
-import cf.scenecho.dinner.account.service.SignUpForm;
+import cf.scenecho.dinner.account.domain.SignUpForm;
 import cf.scenecho.dinner.account.service.SignUpService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ class ProfileControllerTest {
     @Autowired SignUpService signUpService;
 
     @Test
-    void When_get_Should_profilePage() throws Exception {
+    void When_req_Should_profilePage() throws Exception {
         SignUpForm signUpForm = TestAccount.createSignUpForm();
         Long id = signUpService.processSignUp(signUpForm);
 

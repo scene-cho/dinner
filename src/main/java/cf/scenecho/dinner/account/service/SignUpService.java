@@ -2,6 +2,7 @@ package cf.scenecho.dinner.account.service;
 
 import cf.scenecho.dinner.account.domain.Account;
 import cf.scenecho.dinner.account.domain.AccountRepository;
+import cf.scenecho.dinner.account.domain.SignUpForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

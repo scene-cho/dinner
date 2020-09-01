@@ -8,14 +8,18 @@
 Form
 
 <form th:object="${signUpForm}" th:action="@{/accounts}" th:method="post">
+
     <label>username
         <input th:field="*{username}">
-    </label>
-    <label>password
-        <input th:field="*{password}">
+        <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
     </label>
     <label>email
         <input th:field="*{email}">
+        <small th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+    </label>
+    <label>password
+        <input th:field="*{password}">
+        <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
     </label>
     <button type="submit">submit</button>
 </form>

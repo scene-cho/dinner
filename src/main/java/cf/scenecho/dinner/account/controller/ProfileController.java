@@ -24,6 +24,8 @@ public class ProfileController {
 
     @GetMapping(URL)
     public String showProfileRequest(@PathVariable Long id, Model model) {
+        // TODO
+        System.out.println("accounts/id" + id);
         Account account = profileService.findAccount(id);
         model.addAttribute(account);
         return PROFILE_VIEW;

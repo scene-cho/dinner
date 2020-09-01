@@ -2,6 +2,7 @@ package cf.scenecho.dinner.account.controller;
 
 import cf.scenecho.dinner.account.domain.Account;
 import cf.scenecho.dinner.account.domain.AccountRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -9,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -24,9 +26,13 @@ class SignUpControllerTest {
     @Autowired MockMvc mockMvc;
     @Autowired AccountRepository accountRepository;
 
-    @Test
-    void When_get_Should_signUpPage() throws Exception {
+    @AfterEach
+    void clearRepository() {
+        accountRepository.deleteAll();
+    }
 
+    @Test
+    void When_req_Should_signUpPage() throws Exception {
         mockMvc.perform(get(SignUpController.URL))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -36,7 +42,7 @@ class SignUpControllerTest {
     }
 
     @Test
-    void When_post_Should_process() throws Exception {
+    void When_submit_Should_process() throws Exception {
         mockMvc.perform(post(SignUpController.URL)
                 .param("username", TestAccount.USERNAME)
                 .param("email", TestAccount.EMAIL)
@@ -55,4 +61,21 @@ class SignUpControllerTest {
         assertThat(account.getPassword()).isNotEqualTo(TestAccount.PASSWORD);
     }
 
+    @Test
+    void When_wrongSubmit_Should_reject() throws Exception {
+        mockMvc.perform(post(SignUpController.URL)
+                .param("username", TestAccount.USERNAME_INVALID)
+                .param("email", TestAccount.EMAIL_INVALID)
+                .param("password", TestAccount.PASSWORD_INVALID)
+                .with(csrf())
+        )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(view().name(SignUpController.FORM_VIEW))
+                .andExpect(model().attributeHasFieldErrors("signUpForm", "username", "email", "password"))
+        ;
+
+        Optional<Account> account = accountRepository.findByUsername(TestAccount.USERNAME);
+        assertThat(account).isEmpty();
+    }
 }

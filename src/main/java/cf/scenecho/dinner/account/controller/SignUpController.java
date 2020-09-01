@@ -1,6 +1,6 @@
 package cf.scenecho.dinner.account.controller;
 
-import cf.scenecho.dinner.account.service.SignUpForm;
+import cf.scenecho.dinner.account.domain.SignUpForm;
 import cf.scenecho.dinner.account.service.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,7 +32,9 @@ public class SignUpController {
 
     @PostMapping(URL)
     public String signUpRequest(@Valid SignUpForm signUpForm, Errors errors) {
-        // TODO Exception
+        if (errors.hasErrors()) {
+            return FORM_VIEW;
+        }
         Long accountId = signUpService.processSignUp(signUpForm);
         return "redirect:" + ProfileController.BASE_URL + accountId;
     }

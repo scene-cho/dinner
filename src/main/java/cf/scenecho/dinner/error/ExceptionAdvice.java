@@ -1,4 +1,4 @@
-package cf.scenecho.dinner.account;
+package cf.scenecho.dinner.error;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,6 +14,6 @@ public class ExceptionAdvice {
         log.info("requested {}", request.getRequestURI());
         //TODO
 //        log.error("bad request", e);
-        return "";
+        return "404";
     }
 }
