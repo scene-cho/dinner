@@ -9,14 +9,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -34,7 +30,6 @@ class SignUpControllerTest {
     @Test
     void When_req_Should_signUpPage() throws Exception {
         mockMvc.perform(get(SignUpController.URL))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name(SignUpController.FORM_VIEW))
                 .andExpect(model().attributeExists("signUpForm"))
@@ -49,7 +44,6 @@ class SignUpControllerTest {
                 .param("password", TestAccount.PASSWORD)
                 .with(csrf())
         )
-                .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern(ProfileController.BASE_URL + "*"))
         ;
@@ -70,7 +64,6 @@ class SignUpControllerTest {
                 .param("password", TestAccount.PASSWORD_INVALID)
                 .with(csrf())
         )
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name(SignUpController.FORM_VIEW))
                 .andExpect(model().attributeHasFieldErrors("signUpForm", "username", "email", "password"))
