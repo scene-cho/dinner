@@ -1,15 +1,17 @@
 package cf.scenecho.dinner.config;
 
 import cf.scenecho.dinner.HomeController;
-import cf.scenecho.dinner.account.controller.ProfileController;
-import cf.scenecho.dinner.account.controller.SignUpController;
+import cf.scenecho.dinner.account.AccountController;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -17,15 +19,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        final String wildcard = "*";
         http.authorizeRequests()
                 .mvcMatchers(HttpMethod.GET,
-                        HomeController.URL, SignUpController.URL,
-                        ProfileController.BASE_URL + wildcard)
+                        HomeController.URL,
+                        AccountController.SIGNUP_URL, AccountController.PROFILE_URL + "*")
                 .permitAll()
 
                 .mvcMatchers(HttpMethod.POST,
-                        SignUpController.URL)
+                        AccountController.SIGNUP_URL)
                 .permitAll()
 
                 .anyRequest().authenticated();
@@ -36,6 +37,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring()
                 .mvcMatchers("/node_modules/**")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
 }

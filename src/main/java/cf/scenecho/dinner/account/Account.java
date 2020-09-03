@@ -1,11 +1,10 @@
-package cf.scenecho.dinner.account.domain;
+package cf.scenecho.dinner.account;
 
 import lombok.Getter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -23,6 +22,10 @@ public class Account {
     @Column(unique = true)
     private String password;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private final Set<AccountRole> roles = new HashSet<>();
+
     protected Account() {
     }
 
@@ -30,5 +33,10 @@ public class Account {
         this.username = username;
         this.email = email;
         this.password = password;
+        roles.add(AccountRole.USER);
+    }
+
+    public void addRole(AccountRole role) {
+        roles.add(role);
     }
 }

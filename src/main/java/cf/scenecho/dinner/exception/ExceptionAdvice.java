@@ -1,6 +1,7 @@
 package cf.scenecho.dinner.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -9,30 +10,27 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @ControllerAdvice
 public class ExceptionAdvice {
-    public static final String SERVER_ERROR_PAGE = "5xx";
-    public static final String BAD_REQUEST_PAGE = "404";
+    static final String DIR = "errors/";
+    public static final String UNEXPECTED = DIR + "unexpected";
+    public static final String USERNAME_NOT_FOUND = DIR + "username-not-found";
+    public static final String DINNER_EXCEPTION = DIR + "dinner-exception";
 
     @ExceptionHandler
     public String handleRuntimeException(HttpServletRequest request, RuntimeException exception) {
         log.info("requested {}, exception {}", request.getRequestURI(), exception.getMessage());
-        return SERVER_ERROR_PAGE;
+        return UNEXPECTED;
+    }
+
+    @ExceptionHandler
+    public String handleUsernameNotFoundException(HttpServletRequest request, UsernameNotFoundException exception) {
+        log.info("requested {}, exception {}", request.getRequestURI(), exception.getMessage());
+        return USERNAME_NOT_FOUND;
     }
 
     @ExceptionHandler
     public String handleDinnerException(HttpServletRequest request, DinnerException exception) {
         log.info("requested {}, exception {}", request.getRequestURI(), exception.getMessage());
-        return SERVER_ERROR_PAGE;
+        return DINNER_EXCEPTION;
     }
 
-    @ExceptionHandler
-    public String handleAccountException(HttpServletRequest request, AccountException exception) {
-        log.info("requested {}, exception {}", request.getRequestURI(), exception.getMessage());
-        return SERVER_ERROR_PAGE;
-    }
-
-    @ExceptionHandler
-    public String handleUserNotFoundException(HttpServletRequest request, UserNotFoundException exception) {
-        log.info("requested {}, exception {}", request.getRequestURI(), exception.getMessage());
-        return BAD_REQUEST_PAGE;
-    }
 }

@@ -1,6 +1,4 @@
-package cf.scenecho.dinner.account.controller;
-
-import cf.scenecho.dinner.account.domain.SignUpForm;
+package cf.scenecho.dinner.account;
 
 public class TestAccount {
     public static final String USERNAME = "username";
@@ -14,8 +12,8 @@ public class TestAccount {
     private TestAccount() {
     }
 
-    public static SignUpForm createSignUpForm() {
-        SignUpForm signUpForm = new SignUpForm();
+    public static SignupForm createSignUpForm() {
+        SignupForm signUpForm = new SignupForm();
         signUpForm.setUsername(USERNAME);
         signUpForm.setEmail(EMAIL);
         signUpForm.setPassword(PASSWORD);

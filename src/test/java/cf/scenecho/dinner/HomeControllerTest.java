@@ -16,16 +16,22 @@ class HomeControllerTest {
     @Autowired MockMvc mockMvc;
 
     @Test
-    void When_visit_Should_provideLayout() throws Exception {
+    void get_provideLayout() throws Exception {
+        String XPATH_HEAD = "html/head/";
+        String XPATH_BODY = "html/body/";
         mockMvc.perform(get(HomeController.URL))
                 .andExpect(status().isOk())
                 .andExpect(view().name(HomeController.VIEW_NAME))
                 .andExpect(header().string("Content-Type", "text/html;charset=UTF-8"))
-                .andExpect(xpath("html/head/title").string("Dinner"))
-                .andExpect(xpath("html/head/link").nodeCount(1))
-                .andExpect(xpath("html/head/script").nodeCount(2))
-                .andExpect(xpath("html/body/nav").exists())
-                .andExpect(xpath("html/body/footer").exists())
+
+                .andExpect(xpath(XPATH_HEAD + "title").string("Dinner"))
+                .andExpect(xpath(XPATH_HEAD + "link").nodeCount(1))
+                .andExpect(xpath(XPATH_HEAD + "script").nodeCount(2))
+
+                .andExpect(xpath(XPATH_BODY + "nav").exists())
+                .andExpect(xpath(XPATH_BODY + "header").exists())
+                .andExpect(xpath(XPATH_BODY + "section").exists())
+                .andExpect(xpath(XPATH_BODY + "footer").exists())
         ;
     }
 

@@ -1,4 +1,4 @@
-package cf.scenecho.dinner.account.domain;
+package cf.scenecho.dinner.account;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Getter @Setter
-public class SignUpForm {
+public class SignupForm {
 
     @NotBlank @Length(min = 2, max = 20)
     private String username;

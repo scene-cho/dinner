@@ -1,7 +1,6 @@
-package cf.scenecho.dinner.account.controller;
+package cf.scenecho.dinner.account;
 
-import cf.scenecho.dinner.account.domain.Account;
-import cf.scenecho.dinner.account.domain.AccountRepository;
+import cf.scenecho.dinner.exception.ExceptionAdvice;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +16,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class SignUpControllerTest {
+class AccountControllerTest {
 
     @Autowired MockMvc mockMvc;
+    @Autowired AccountService accountService;
     @Autowired AccountRepository accountRepository;
 
     @AfterEach
@@ -28,27 +28,27 @@ class SignUpControllerTest {
     }
 
     @Test
-    void When_visit_Should_signUpPage() throws Exception {
-        mockMvc.perform(get(SignUpController.URL))
+    void signupPage() throws Exception {
+        mockMvc.perform(get(AccountController.SIGNUP_URL))
                 .andExpect(status().isOk())
-                .andExpect(view().name(SignUpController.FORM_VIEW))
-                .andExpect(model().attributeExists("signUpForm"))
+                .andExpect(view().name(AccountController.SIGNUP_VIEW))
+                .andExpect(model().attributeExists("signupForm"))
         ;
     }
 
     @Test
-    void When_submit_Should_process() throws Exception {
-        mockMvc.perform(post(SignUpController.URL)
+    void signup_processAndRedirect() throws Exception {
+        mockMvc.perform(post(AccountController.SIGNUP_URL)
                 .param("username", TestAccount.USERNAME)
                 .param("email", TestAccount.EMAIL)
                 .param("password", TestAccount.PASSWORD)
                 .with(csrf())
         )
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern(ProfileController.BASE_URL + "*"))
+                .andExpect(redirectedUrlPattern(AccountController.PROFILE_URL + "*"))
         ;
 
-        Account account = accountRepository.findByUsername(TestAccount.USERNAME);
+        Account account = accountRepository.findByUsername(TestAccount.USERNAME).orElse(null);
         assertThat(account).isNotNull();
         assertThat(account.getId()).isNotNull();
         assertThat(account.getUsername()).isEqualTo(TestAccount.USERNAME);
@@ -57,19 +57,41 @@ class SignUpControllerTest {
     }
 
     @Test
-    void When_wrongSubmit_Should_reject() throws Exception {
-        mockMvc.perform(post(SignUpController.URL)
+    void signup_invalid_rejectAndSignupPage() throws Exception {
+        mockMvc.perform(post(AccountController.SIGNUP_URL)
                 .param("username", TestAccount.USERNAME_INVALID)
                 .param("email", TestAccount.EMAIL_INVALID)
                 .param("password", TestAccount.PASSWORD_INVALID)
                 .with(csrf())
         )
                 .andExpect(status().isOk())
-                .andExpect(view().name(SignUpController.FORM_VIEW))
-                .andExpect(model().attributeHasFieldErrors("signUpForm", "username", "email", "password"))
+                .andExpect(view().name(AccountController.SIGNUP_VIEW))
+                .andExpect(model().attributeHasFieldErrors("signupForm", "username", "email", "password"))
         ;
 
-        Account account = accountRepository.findByUsername(TestAccount.USERNAME);
+        Account account = accountRepository.findByUsername(TestAccount.USERNAME).orElse(null);
         assertThat(account).isNull();
+    }
+
+    @Test
+    void profilePage() throws Exception {
+        SignupForm signUpForm = TestAccount.createSignUpForm();
+        String username = accountService.processSignup(signUpForm);
+
+        mockMvc.perform(get(AccountController.PROFILE_URL + username))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("account"))
+                .andExpect(view().name(AccountController.PROFILE_VIEW))
+        ;
+    }
+
+    @Test
+    void profilePage_nonExistent_throwAndHandleException() throws Exception {
+        String username = TestAccount.USERNAME_INVALID;
+
+        mockMvc.perform(get(AccountController.PROFILE_URL + username))
+                .andExpect(status().isOk())
+                .andExpect(view().name(ExceptionAdvice.USERNAME_NOT_FOUND))
+        ;
     }
 }
