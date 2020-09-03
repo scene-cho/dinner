@@ -28,7 +28,7 @@ class SignUpControllerTest {
     }
 
     @Test
-    void When_req_Should_signUpPage() throws Exception {
+    void When_visit_Should_signUpPage() throws Exception {
         mockMvc.perform(get(SignUpController.URL))
                 .andExpect(status().isOk())
                 .andExpect(view().name(SignUpController.FORM_VIEW))

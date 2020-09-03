@@ -9,8 +9,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.persistence.EntityManager;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -20,7 +18,6 @@ class ProfileControllerTest {
 
     @Autowired MockMvc mockMvc;
     @Autowired SignUpService signUpService;
-    @Autowired EntityManager entityManager;
 
     @Test
     void When_req_Should_profilePage() throws Exception {

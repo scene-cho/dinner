@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
     public static final String URL = "/";
 
+    static final String VIEW_NAME = "home";
+
     @GetMapping(URL)
     public String home() {
-        return "home";
+        return VIEW_NAME;
     }
 
 }
