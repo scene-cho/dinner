@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="/fragments/head::base(~{::title},~{::link},~{::script})">
+        <title>Dinner</title>
+        <link rel="stylesheet" href="/css/#"/>
+        <script src="/js/#"></script>
+    </head>
+
+    <body class="bg-light">
+        <nav th:replace="/fragments/body/nav::navbar"></nav>
+        <div class="container">
+            <header th:replace="/fragments/body/header::base(~{::#headerParam})">
+                <span id="headerParam">header param</span>
+            </header>
+            <section class="container">
+
+                <form th:object="${signupForm}" th:action="@{/signup}" th:method="post">
+                    <label>username
+                        <input th:field="*{username}">
+                        <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
+                    </label>
+                    <label>email
+                        <input th:field="*{email}">
+                        <small th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+                    </label>
+                    <label>password
+                        <input th:field="*{password}">
+                        <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+                    </label>
+                    <button type="submit">submit</button>
+                </form>
+
+            </section>
+            <footer th:replace="/fragments/body/footer::base(~{::#footerParam})">
+                <span id="footerParam">footer param</span>
+            </footer>
+        </div>
+    </body>
+</html>

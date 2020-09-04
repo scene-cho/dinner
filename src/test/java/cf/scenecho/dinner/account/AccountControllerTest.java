@@ -6,10 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -21,6 +25,7 @@ class AccountControllerTest {
     @Autowired MockMvc mockMvc;
     @Autowired AccountService accountService;
     @Autowired AccountRepository accountRepository;
+    @Autowired PasswordEncoder passwordEncoder;
 
     @AfterEach
     void clearRepository() {
@@ -54,6 +59,7 @@ class AccountControllerTest {
         assertThat(account.getUsername()).isEqualTo(TestAccount.USERNAME);
         assertThat(account.getEmail()).isEqualTo(TestAccount.EMAIL);
         assertThat(account.getPassword()).isNotEqualTo(TestAccount.PASSWORD);
+        assertThat(passwordEncoder.matches(TestAccount.PASSWORD, account.getPassword())).isTrue();
     }
 
     @Test
@@ -92,6 +98,48 @@ class AccountControllerTest {
         mockMvc.perform(get(AccountController.PROFILE_URL + username))
                 .andExpect(status().isOk())
                 .andExpect(view().name(ExceptionAdvice.USERNAME_NOT_FOUND))
+        ;
+    }
+
+    @Test
+    void login_authenticated() throws Exception {
+        SignupForm signUpForm = TestAccount.createSignUpForm();
+        accountService.processSignup(signUpForm);
+
+        mockMvc.perform(formLogin()
+                .user(TestAccount.USERNAME).password(TestAccount.PASSWORD)
+        )
+                .andExpect(authenticated())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"))
+        ;
+    }
+
+    @Test
+    void login_nonExistent_unauthenticated() throws Exception {
+        SignupForm signUpForm = TestAccount.createSignUpForm();
+        accountService.processSignup(signUpForm);
+
+        mockMvc.perform(formLogin()
+                .user(TestAccount.USERNAME_INVALID).password(TestAccount.PASSWORD)
+        )
+                .andExpect(unauthenticated())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login?error"))
+        ;
+    }
+
+    @Test
+    void login_invalidPassword_unauthenticated() throws Exception {
+        SignupForm signUpForm = TestAccount.createSignUpForm();
+        accountService.processSignup(signUpForm);
+
+        mockMvc.perform(formLogin()
+                .user(TestAccount.USERNAME).password(TestAccount.PASSWORD_INVALID)
+        )
+                .andExpect(unauthenticated())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login?error"))
         ;
     }
 }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <nav th:fragment="navbar" class="navbar">
+        <button type="button" class="btn btn-dark" onclick="openNav()">menu</button>
+        <nav th:replace="::sidebar">sidebar</nav>
+
+        <a href="/" class="navbar-brand">Dinner</a>
+
+        <span sec:authorize="!isAuthenticated()"><a href="/login" class="btn btn-dark">login</a></span>
+        <span sec:authorize="isAuthenticated()">
+            <a sec:authentication="name" th:href="@{/accounts/{username}(username=${#authentication.name})}" class="btn btn-dark">username</a>
+        </span>
+    </nav>
+
+    <nav th:fragment="sidebar" id="sidebar" class="sidebar text-center">
+        <a class="close-btn" onclick="closeNav()" href="javascript:void(0)">x</a>
+        <a href="#">Magazines</a>
+        <ul>
+            <li><a href="#"><small>Palm Tree Canteen</small></a></li>
+            <li><a href="#"><small>Scene Cho's</small></a></li>
+        </ul>
+        <a href="#"><small>etc</small></a>
+        <hr/>
+        <a href="#">About</a>
+    </nav>
+
+</html>

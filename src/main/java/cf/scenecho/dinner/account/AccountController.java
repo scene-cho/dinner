@@ -14,10 +14,12 @@ import javax.validation.Valid;
 public class AccountController {
     public static final String SIGNUP_URL = "/signup";
     public static final String PROFILE_URL = "/accounts/";
+    public static final String LOGIN_URL = "/login";
 
     static final String DIR = "accounts/";
-    static final String SIGNUP_VIEW = DIR + "form";
+    static final String SIGNUP_VIEW = DIR + "signup";
     static final String PROFILE_VIEW = DIR + "profile";
+    static final String LOGIN_VIEW = DIR + "login";
 
     private final AccountService accountService;
 
@@ -48,4 +50,8 @@ public class AccountController {
         return PROFILE_VIEW;
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return LOGIN_VIEW;
+    }
 }

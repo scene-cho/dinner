@@ -3,8 +3,8 @@
 
     <head th:replace="/fragments/head::base(~{::title},~{::link},~{::script})">
         <title>Dinner</title>
-        <link rel="stylesheet" href="/css/#"/>
-        <script src="/js/#"></script>
+        <link rel="stylesheet" href="/static/css#"/>
+        <script src="/static/js#"></script>
     </head>
 
     <body class="bg-light">
@@ -15,10 +15,14 @@
             </header>
             <section class="container">
 
-                <article>
-                    <h1>Dinner</h1>
-                    <p>This is home of Dinner.</p>
-                </article>
+                <p th:if="${param.error}">Invalid username or password</p>
+                <form th:action="@{/login}" method="post">
+                    <p>Username: <input type="text" name="username"/></p>
+                    <p>Password: <input type="password" name="password"/></p>
+                    <p><input type="submit" value="Login"/></p>
+                </form>
+
+                <a href="/signup">signUp</a>
 
             </section>
             <footer th:replace="/fragments/body/footer::base(~{::#footerParam})">

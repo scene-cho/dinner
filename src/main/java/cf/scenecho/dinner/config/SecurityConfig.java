@@ -30,6 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
 
                 .anyRequest().authenticated();
+
+        http.formLogin()
+                .loginPage(AccountController.LOGIN_URL).permitAll();
     }
 
     @Override

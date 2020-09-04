@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+    <head th:fragment="base(title,links,scripts)">
+
+        <title th:replace="${title}">Title</title>
+
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+        <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
+        <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+        <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+        <link rel="stylesheet" href="/css/sidebar.css"/>
+        <script src="/js/sidebar.js"></script>
+
+        <link th:replace="${links}"/>
+        <script th:replace="${scripts}"></script>
+
+    </head>
+
+</html>

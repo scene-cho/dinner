@@ -25,13 +25,13 @@ class HomeControllerTest {
                 .andExpect(header().string("Content-Type", "text/html;charset=UTF-8"))
 
                 .andExpect(xpath(XPATH_HEAD + "title").string("Dinner"))
-                .andExpect(xpath(XPATH_HEAD + "link").nodeCount(1))
-                .andExpect(xpath(XPATH_HEAD + "script").nodeCount(2))
+                .andExpect(xpath(XPATH_HEAD + "link").nodeCount(2))
+                .andExpect(xpath(XPATH_HEAD + "script").nodeCount(3))
 
                 .andExpect(xpath(XPATH_BODY + "nav").exists())
-                .andExpect(xpath(XPATH_BODY + "header").exists())
-                .andExpect(xpath(XPATH_BODY + "section").exists())
-                .andExpect(xpath(XPATH_BODY + "footer").exists())
+                .andExpect(xpath(XPATH_BODY + "div/header").exists())
+                .andExpect(xpath(XPATH_BODY + "div/section").exists())
+                .andExpect(xpath(XPATH_BODY + "div/footer").exists())
         ;
     }
 
