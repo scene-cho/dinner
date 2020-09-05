@@ -2,6 +2,9 @@ package cf.scenecho.dinner.config;
 
 import cf.scenecho.dinner.HomeController;
 import cf.scenecho.dinner.account.AccountController;
+import cf.scenecho.dinner.article.ArticleController;
+import cf.scenecho.dinner.magazine.MagazineController;
+import cf.scenecho.dinner.topic.TopicController;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .mvcMatchers(HttpMethod.GET,
-                        HomeController.URL, AccountController.SIGNUP_URL, AccountController.PROFILE_URL + "*")
+                        HomeController.HOME_URL, HomeController.ABOUT_URL,
+                        AccountController.SIGNUP_URL, AccountController.PROFILE_URL + "*",
+                        MagazineController.URL + "*", TopicController.URL + "*", ArticleController.URL + "*")
                 .permitAll()
 
                 .mvcMatchers(HttpMethod.POST,
@@ -45,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage(AccountController.LOGIN_URL).permitAll()
                 .successHandler(authenticationSuccessHandler());
         http.logout()
-                .logoutSuccessUrl(HomeController.URL);
+                .logoutSuccessUrl(HomeController.HOME_URL);
     }
 
     @Override
@@ -81,7 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 }
             }
         };
-        successHandler.setDefaultTargetUrl(HomeController.URL);
+        successHandler.setDefaultTargetUrl(HomeController.HOME_URL);
         return successHandler;
     }
 

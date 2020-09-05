@@ -12,16 +12,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class HomeControllerTest {
+    static final String XPATH_HEAD = "html/head/";
+    static final String XPATH_BODY = "html/body/";
 
     @Autowired MockMvc mockMvc;
 
     @Test
-    void get_provideLayout() throws Exception {
-        String XPATH_HEAD = "html/head/";
-        String XPATH_BODY = "html/body/";
-        mockMvc.perform(get(HomeController.URL))
+    void homePage_hasLayout() throws Exception {
+        mockMvc.perform(get(HomeController.HOME_URL))
                 .andExpect(status().isOk())
-                .andExpect(view().name(HomeController.VIEW_NAME))
+                .andExpect(view().name(HomeController.HOME_VIEW))
                 .andExpect(header().string("Content-Type", "text/html;charset=UTF-8"))
 
                 .andExpect(xpath(XPATH_HEAD + "title").string("Dinner"))
@@ -33,6 +33,15 @@ class HomeControllerTest {
                 .andExpect(xpath(XPATH_BODY + "div/section").exists())
                 .andExpect(xpath(XPATH_BODY + "div/footer").exists())
         ;
+    }
+
+    @Test
+    void aboutPage_hasSignupLink() throws Exception {
+        mockMvc.perform(get(HomeController.ABOUT_URL))
+                .andExpect(status().isOk())
+                .andExpect(view().name(HomeController.ABOUT_VIEW))
+                .andExpect(xpath(XPATH_BODY + "div/section/div/div/div/div/a").string("Signup"));
+
     }
 
 }

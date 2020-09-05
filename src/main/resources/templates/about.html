@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="/fragments/head::base(~{::title},~{::link},~{::script})">
+        <title>Dinner</title>
+        <link rel="stylesheet" href="/css/#"/>
+        <script src="/js/#"></script>
+    </head>
+
+    <body class="bg-light">
+        <nav th:replace="/fragments/body/nav::navbar"></nav>
+        <div class="container">
+            <header th:replace="/fragments/body/header::base(~{::#headerParam})">
+                <span id="headerParam">header param</span>
+            </header>
+            <section class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+
+                        <div class="row">
+                            <div class="col-12 text-center">
+
+                                <article>
+                                    <h1>About Dinner</h1>
+                                </article>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <a href="/signup" class="btn btn-dark">Signup</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <footer th:replace="/fragments/body/footer::base(~{::#footerParam})">
+                <span id="footerParam">footer param</span>
+            </footer>
+        </div>
+    </body>
+</html>

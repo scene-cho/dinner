@@ -5,13 +5,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
-    public static final String URL = "/";
+    public static final String HOME_URL = "/";
+    public static final String ABOUT_URL = "/about";
 
-    static final String VIEW_NAME = "home";
+    static final String HOME_VIEW = "home";
+    static final String ABOUT_VIEW = "about";
 
-    @GetMapping(URL)
+    @GetMapping(HOME_URL)
     public String home() {
-        return VIEW_NAME;
+        return HOME_VIEW;
     }
 
+    @GetMapping(ABOUT_URL)
+    public String about() {
+        return ABOUT_VIEW;
+    }
 }

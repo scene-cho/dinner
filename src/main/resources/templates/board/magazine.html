@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="/fragments/head::base(~{::title},~{::link},~{::script})">
+        <title>Dinner</title>
+        <link rel="stylesheet" href="/css/#"/>
+        <script src="/js/#"></script>
+    </head>
+
+    <body class="bg-light">
+        <nav th:replace="/fragments/body/nav::navbar"></nav>
+        <div class="container">
+            <header th:replace="/fragments/body/header::base(~{::#headerParam})">
+                <span id="headerParam">header param</span>
+            </header>
+            <section class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h1 th:text="${magazineName}"></h1>
+                                <p>같은 주제에 대해 서로 다른 글을 씁니다.</p>
+                            </div>
+                        </div>
+
+                        <ul class="row">
+                            <li class="col-md-6 text-center">
+                                <a th:href="@{/topics/snow-novel}"> 기록적인 폭설을 배경으로 한 소설.</a>
+                            </li>
+                            <li class="col-md-6 text-center">
+                                서울 지하철 역 하나를 고르고 그에 대해 쓰시오.
+                            </li>
+                            <li class="col-md-6 text-center">
+                                Call me by your name.
+                            </li>
+                            <li class="col-md-6 text-center">
+                                가상의 명절을 그린 소설.
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </section>
+            <footer th:replace="/fragments/body/footer::base(~{::#footerParam})">
+                <span id="footerParam">footer param</span>
+            </footer>
+        </div>
+    </body>
+</html>

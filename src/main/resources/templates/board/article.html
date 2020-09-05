@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="/fragments/head::base(~{::title},~{::link},~{::script})">
+        <title>Dinner</title>
+        <link rel="stylesheet" href="/css/#"/>
+        <script src="/js/#"></script>
+    </head>
+
+    <body class="bg-light">
+        <nav th:replace="/fragments/body/nav::navbar"></nav>
+        <div class="container">
+            <header th:replace="/fragments/body/header::base(~{::#headerParam})">
+                <span id="headerParam">header param</span>
+            </header>
+            <section class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <article>
+                                    <h2>기록적인 폭설을 배경으로 한 소설</h2>
+                                    <h1 th:text="${articleName}"></h1>
+                                    <h3>도언</h3>
+                                    <p>레릿고 레릿고</p>
+                                </article>
+                            </div>
+                        </div>
+
+                        <ul class="row">
+                            <li class="col-12 text-center">
+                                댓글 1
+                            </li>
+                            <li class="col-12 text-center">
+                                댓글 2
+                            </li>
+                            <li class="col-12 text-center">
+                                댓글 3
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </section>
+            <footer th:replace="/fragments/body/footer::base(~{::#footerParam})">
+                <span id="footerParam">footer param</span>
+            </footer>
+        </div>
+    </body>
+</html>

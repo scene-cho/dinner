@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="/fragments/head::base(~{::title},~{::link},~{::script})">
+        <title>Dinner</title>
+        <link rel="stylesheet" href="/css/#"/>
+        <script src="/js/#"></script>
+    </head>
+
+    <body class="bg-light">
+        <nav th:replace="/fragments/body/nav::navbar"></nav>
+        <div class="container">
+            <header th:replace="/fragments/body/header::base(~{::#headerParam})">
+                <span id="headerParam">header param</span>
+            </header>
+            <section class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h2>Palm Tree Canteen</h2>
+                                <h1 th:text="${topicName}"></h1>
+                                <p>기록적인 폭설을 배경으로 한 소설</p>
+                            </div>
+                        </div>
+
+                        <ul class="row">
+                            <li class="col-12 text-center">
+                                <a th:href="@{/articles/frozen}">겨울왕국</a>
+                            </li>
+                            <li class="col-12 text-center">
+                                설국
+                            </li>
+                            <li class="col-12 text-center">
+                                설국열차
+                            </li>
+                            <li class="col-12 text-center">
+                                떡국열차
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </section>
+            <footer th:replace="/fragments/body/footer::base(~{::#footerParam})">
+                <span id="footerParam">footer param</span>
+            </footer>
+        </div>
+    </body>
+</html>

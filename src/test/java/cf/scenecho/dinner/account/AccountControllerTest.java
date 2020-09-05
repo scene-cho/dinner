@@ -133,7 +133,7 @@ class AccountControllerTest {
         mockMvc.perform(logout())
                 .andExpect(unauthenticated())
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(HomeController.URL));
+                .andExpect(redirectedUrl(HomeController.HOME_URL));
     }
 
     @Test
