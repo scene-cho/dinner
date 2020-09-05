@@ -1,5 +1,6 @@
 package cf.scenecho.dinner.account;
 
+import cf.scenecho.dinner.HomeController;
 import cf.scenecho.dinner.exception.ExceptionAdvice;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.logout;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
@@ -22,7 +24,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class AccountControllerTest {
 
+    static final String USERNAME = "scene";
+    static final String EMAIL = USERNAME + "@email.com";
+    static final String PASSWORD = "password!";
+
     @Autowired MockMvc mockMvc;
+    @Autowired AccountFactory accountFactory;
     @Autowired AccountService accountService;
     @Autowired AccountRepository accountRepository;
     @Autowired PasswordEncoder passwordEncoder;
@@ -44,31 +51,31 @@ class AccountControllerTest {
     @Test
     void signup_processAndRedirect() throws Exception {
         mockMvc.perform(post(AccountController.SIGNUP_URL)
-                .param("username", TestAccount.USERNAME)
-                .param("email", TestAccount.EMAIL)
-                .param("password", TestAccount.PASSWORD)
+                .param("username", USERNAME)
+                .param("email", EMAIL)
+                .param("password", PASSWORD)
                 .with(csrf())
         )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern(AccountController.PROFILE_URL + "*"))
-                .andExpect(authenticated().withUsername(TestAccount.USERNAME))
+                .andExpect(authenticated().withUsername(USERNAME))
         ;
 
-        Account account = accountRepository.findByUsername(TestAccount.USERNAME).orElse(null);
+        Account account = accountRepository.findByUsername(USERNAME).orElse(null);
         assertThat(account).isNotNull();
         assertThat(account.getId()).isNotNull();
-        assertThat(account.getUsername()).isEqualTo(TestAccount.USERNAME);
-        assertThat(account.getEmail()).isEqualTo(TestAccount.EMAIL);
-        assertThat(account.getPassword()).isNotEqualTo(TestAccount.PASSWORD);
-        assertThat(passwordEncoder.matches(TestAccount.PASSWORD, account.getPassword())).isTrue();
+        assertThat(account.getUsername()).isEqualTo(USERNAME);
+        assertThat(account.getEmail()).isEqualTo(EMAIL);
+        assertThat(account.getPassword()).isNotEqualTo(PASSWORD);
+        assertThat(passwordEncoder.matches(PASSWORD, account.getPassword())).isTrue();
     }
 
     @Test
     void signup_invalid_rejectAndSignupPage() throws Exception {
         mockMvc.perform(post(AccountController.SIGNUP_URL)
-                .param("username", TestAccount.USERNAME_INVALID)
-                .param("email", TestAccount.EMAIL_INVALID)
-                .param("password", TestAccount.PASSWORD_INVALID)
+                .param("username", "[notAllowed]")
+                .param("email", "notEmail")
+                .param("password", "short")
                 .with(csrf())
         )
                 .andExpect(status().isOk())
@@ -77,41 +84,20 @@ class AccountControllerTest {
                 .andExpect(unauthenticated())
         ;
 
-        Account account = accountRepository.findByUsername(TestAccount.USERNAME).orElse(null);
+        Account account = accountRepository.findByUsername(USERNAME).orElse(null);
         assertThat(account).isNull();
     }
 
-    @Test
-    void profilePage() throws Exception {
-        SignupForm signUpForm = TestAccount.createSignUpForm();
-        String username = accountService.processSignup(signUpForm);
-
-        mockMvc.perform(get(AccountController.PROFILE_URL + username))
-                .andExpect(status().isOk())
-                .andExpect(model().attributeExists("account"))
-                .andExpect(view().name(AccountController.PROFILE_VIEW))
-        ;
-    }
-
-    @Test
-    void profilePage_nonExistent_throwAndHandleException() throws Exception {
-        String username = TestAccount.USERNAME_INVALID;
-
-        mockMvc.perform(get(AccountController.PROFILE_URL + username))
-                .andExpect(status().isOk())
-                .andExpect(view().name(ExceptionAdvice.USERNAME_NOT_FOUND))
-        ;
-    }
+    // TODO signup duplicate username
 
     @Test
     void login_authenticated() throws Exception {
-        SignupForm signUpForm = TestAccount.createSignUpForm();
-        accountService.processSignup(signUpForm);
+        accountFactory.createAndSaveAccount(USERNAME);
 
         mockMvc.perform(formLogin()
-                .user(TestAccount.USERNAME).password(TestAccount.PASSWORD)
+                .user(USERNAME).password(PASSWORD)
         )
-                .andExpect(authenticated().withUsername(TestAccount.USERNAME))
+                .andExpect(authenticated().withUsername(USERNAME))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
         ;
@@ -119,11 +105,8 @@ class AccountControllerTest {
 
     @Test
     void login_nonExistent_unauthenticated() throws Exception {
-        SignupForm signUpForm = TestAccount.createSignUpForm();
-        accountService.processSignup(signUpForm);
-
         mockMvc.perform(formLogin()
-                .user(TestAccount.USERNAME_INVALID).password(TestAccount.PASSWORD)
+                .user(USERNAME).password(PASSWORD)
         )
                 .andExpect(unauthenticated())
                 .andExpect(status().is3xxRedirection())
@@ -133,15 +116,75 @@ class AccountControllerTest {
 
     @Test
     void login_invalidPassword_unauthenticated() throws Exception {
-        SignupForm signUpForm = TestAccount.createSignUpForm();
-        accountService.processSignup(signUpForm);
+        accountFactory.createAndSaveAccount(USERNAME);
 
         mockMvc.perform(formLogin()
-                .user(TestAccount.USERNAME).password(TestAccount.PASSWORD_INVALID)
+                .user(USERNAME).password("notThisPassword!")
         )
                 .andExpect(unauthenticated())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login?error"))
         ;
     }
+
+    @Test
+    @WithAccount(USERNAME)
+    void logout_unauthenticatedAndMainPage() throws Exception {
+        mockMvc.perform(logout())
+                .andExpect(unauthenticated())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl(HomeController.URL));
+    }
+
+    @Test
+    @WithAccount(USERNAME)
+    void profilePage_owner_detailInfo() throws Exception {
+        mockMvc.perform(get(AccountController.PROFILE_URL + USERNAME))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("isOwner", true))
+                .andExpect(model().attributeExists("username"))
+                .andExpect(model().attributeExists("email"))
+                .andExpect(model().attributeExists("password"))
+                .andExpect(view().name(AccountController.PROFILE_VIEW))
+        ;
+    }
+
+    @Test
+    void profilePage_unauthenticatedViewer_basicInfo() throws Exception {
+        accountFactory.createAndSaveAccount(USERNAME);
+
+        mockMvc.perform(get(AccountController.PROFILE_URL + USERNAME))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("isOwner", false))
+                .andExpect(model().attributeExists("username"))
+                .andExpect(model().attributeExists("email"))
+                .andExpect(model().attributeDoesNotExist("password"))
+                .andExpect(view().name(AccountController.PROFILE_VIEW))
+        ;
+    }
+
+    @Test
+    @WithAccount("stranger")
+    void profilePage_authenticatedStranger_basicInfo() throws Exception {
+        accountFactory.createAndSaveAccount(USERNAME);
+
+        mockMvc.perform(get(AccountController.PROFILE_URL + USERNAME))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("isOwner", false))
+                .andExpect(model().attributeExists("username"))
+                .andExpect(model().attributeExists("email"))
+                .andExpect(model().attributeDoesNotExist("password"))
+                .andExpect(view().name(AccountController.PROFILE_VIEW))
+                .andExpect(authenticated().withUsername(("stranger")))
+        ;
+    }
+
+    @Test
+    void profilePage_nonExistent_throwAndHandleException() throws Exception {
+        mockMvc.perform(get(AccountController.PROFILE_URL + USERNAME))
+                .andExpect(status().isOk())
+                .andExpect(view().name(ExceptionAdvice.USERNAME_NOT_FOUND))
+        ;
+    }
+
 }

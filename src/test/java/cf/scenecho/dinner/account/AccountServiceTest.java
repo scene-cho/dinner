@@ -13,8 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 class AccountServiceTest {
 
+    static final String USERNAME = "scene";
+
     @Autowired AccountService accountService;
     @Autowired AccountRepository accountRepository;
+    @Autowired AccountFactory accountFactory;
 
     @AfterEach
     void clearRepository() {
@@ -23,21 +26,17 @@ class AccountServiceTest {
 
     @Test
     void loadUserByUsername() {
-        SignupForm signUpForm = TestAccount.createSignUpForm();
-        String username = accountService.processSignup(signUpForm);
+        accountFactory.createAndSaveAccount(USERNAME);
 
-        UserDetails user = accountService.loadUserByUsername(username);
-
+        UserDetails user = accountService.loadUserByUsername(USERNAME);
         assertThat(user).isNotNull();
-        assertThat(user.getUsername()).isEqualTo(signUpForm.getUsername());
+        assertThat(user.getUsername()).isEqualTo(USERNAME);
     }
 
     @Test
     void loadUserByUsername_nonExistent_throwException() {
-        String username = TestAccount.USERNAME_INVALID;
-
         assertThrows(UsernameNotFoundException.class, () -> {
-            accountService.loadUserByUsername(username);
+            accountService.loadUserByUsername(USERNAME);
         });
     }
 

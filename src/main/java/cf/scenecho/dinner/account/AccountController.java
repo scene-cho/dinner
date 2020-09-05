@@ -9,18 +9,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
 public class AccountController {
     public static final String SIGNUP_URL = "/signup";
-    public static final String PROFILE_URL = "/accounts/";
     public static final String LOGIN_URL = "/login";
+    public static final String PROFILE_URL = "/accounts/";
 
     static final String DIR = "accounts/";
     static final String SIGNUP_VIEW = DIR + "signup";
-    static final String PROFILE_VIEW = DIR + "profile";
     static final String LOGIN_VIEW = DIR + "login";
+    static final String PROFILE_VIEW = DIR + "profile";
 
     private final AccountService accountService;
 
@@ -44,19 +45,37 @@ public class AccountController {
         return "redirect:" + PROFILE_URL + username;
     }
 
-    @GetMapping(PROFILE_URL + "{username}")
-    public String profilePage(@PathVariable String username, Model model) {
-        Account account = accountService.findAccount(username);
-        model.addAttribute(account);
-        return PROFILE_VIEW;
-    }
-
-    @GetMapping("/login")
+    @GetMapping(LOGIN_URL)
     public String loginPage(HttpServletRequest request) {
         String referer = request.getHeader("Referer");
-        if (!referer.contains("login")) {
-            request.getSession().setAttribute("prev", referer);
-        }
+        HttpSession session = request.getSession();
+        setPrevPage(session, referer);
         return LOGIN_VIEW;
+    }
+
+    private void setPrevPage(HttpSession session, String referer) {
+        String refererInApplicationContext = parseReferer(referer);
+        if (!refererInApplicationContext.startsWith(LOGIN_URL)) {
+            session.setAttribute("prev", referer);
+        }
+    }
+
+    private String parseReferer(String referer) {
+        if (referer == null) return "/";
+        String urlAfterScheme = referer.split("://")[1];
+        String urlAfterApplicationRoot = (urlAfterScheme.split("/").length == 1) ? null : urlAfterScheme.split("/")[1];
+        return "/" + urlAfterApplicationRoot;
+    }
+
+    @GetMapping(PROFILE_URL + "{username}")
+    public String profilePage(@PathVariable String username, @CurrentUser Account currentUser, Model model) {
+        Account foundAccount = accountService.findAccount(username);
+
+        model.addAttribute("isOwner", foundAccount.is(currentUser));
+        model.addAttribute("username", foundAccount.getUsername());
+        model.addAttribute("email", foundAccount.getEmail());
+        if (foundAccount.is(currentUser)) model.addAttribute("password", foundAccount.getPassword());
+
+        return PROFILE_VIEW;
     }
 }

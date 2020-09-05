@@ -1,5 +1,6 @@
 package cf.scenecho.dinner.account;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -7,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Getter
+@Getter @EqualsAndHashCode(of = "id")
 public class Account {
 
     @Id @GeneratedValue
@@ -38,5 +39,9 @@ public class Account {
 
     public void addRole(AccountRole role) {
         roles.add(role);
+    }
+
+    public boolean is(Account account) {
+        return this.equals(account);
     }
 }
