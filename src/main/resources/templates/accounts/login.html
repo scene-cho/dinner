@@ -14,16 +14,37 @@
                 <span id="headerParam">header param</span>
             </header>
             <section class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4">
 
-                <p th:if="${param.error}">Invalid username or password</p>
-                <form th:action="@{/login}" method="post">
-                    <p>Username: <input type="text" name="username"/></p>
-                    <p>Password: <input type="password" name="password"/></p>
-                    <p><input type="submit" value="Login"/></p>
-                </form>
+                        <div class="row">
+                            <div class="col-3 text-left">로그인</div>
+                            <div class="col-9 text-right"><a href="#"><small>비밀번호를 잊어버리셨나요?</small></a></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <form th:action="@{/login}" method="post">
+                                    <input id="username" name="username" type="text" class="form-control"
+                                           placeholder="nickname or example@email.com">
+                                    <input id="password" name="password" type="password" class="form-control"
+                                           placeholder="password">
+                                    <div th:if="${param.error}">
+                                        <small>닉네임/이메일 혹은 비밀번호를 확인해주세요.</small>
+                                    </div>
+                                    <br/>
+                                    <button type="submit" class="btn btn-dark">Login</button>
+                                </form>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <a href="/signup" class="btn btn-dark">Signup</a>
+                            </div>
+                        </div>
 
-                <a href="/signup">signUp</a>
-
+                    </div>
+                </div>
             </section>
             <footer th:replace="/fragments/body/footer::base(~{::#footerParam})">
                 <span id="footerParam">footer param</span>
@@ -31,3 +52,4 @@
         </div>
     </body>
 </html>
+

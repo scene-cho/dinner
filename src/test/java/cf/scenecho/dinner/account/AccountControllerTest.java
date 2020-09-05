@@ -51,6 +51,7 @@ class AccountControllerTest {
         )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern(AccountController.PROFILE_URL + "*"))
+                .andExpect(authenticated().withUsername(TestAccount.USERNAME))
         ;
 
         Account account = accountRepository.findByUsername(TestAccount.USERNAME).orElse(null);
@@ -73,6 +74,7 @@ class AccountControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name(AccountController.SIGNUP_VIEW))
                 .andExpect(model().attributeHasFieldErrors("signupForm", "username", "email", "password"))
+                .andExpect(unauthenticated())
         ;
 
         Account account = accountRepository.findByUsername(TestAccount.USERNAME).orElse(null);
@@ -109,7 +111,7 @@ class AccountControllerTest {
         mockMvc.perform(formLogin()
                 .user(TestAccount.USERNAME).password(TestAccount.PASSWORD)
         )
-                .andExpect(authenticated())
+                .andExpect(authenticated().withUsername(TestAccount.USERNAME))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
         ;

@@ -14,23 +14,54 @@
                 <span id="headerParam">header param</span>
             </header>
             <section class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4">
 
-                <form th:object="${signupForm}" th:action="@{/signup}" th:method="post">
-                    <label>username
-                        <input th:field="*{username}">
-                        <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
-                    </label>
-                    <label>email
-                        <input th:field="*{email}">
-                        <small th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
-                    </label>
-                    <label>password
-                        <input th:field="*{password}">
-                        <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
-                    </label>
-                    <button type="submit">submit</button>
-                </form>
+                        <div class="row">
+                            <div class="col-4 text-left">회원가입</div>
+                            <div class="col-8 text-right"><a href="#"><small>아이디 찾기</small></a></div>
+                        </div>
+                        <hr/>
+                        <div class="row">
+                            <div class="col-12">
+                                <form th:object="${signupForm}" th:action="@{/signup}" th:method="post">
+                                    <div class="form-group">
+                                        <label for="username">닉네임</label>
+                                        <input id="username" type="text" th:field="*{username}" class="form-control"
+                                               placeholder="한글/영어/숫자/-_. 2자에서 10자 사이" aria-describedby="usernameHelp">
+                                        <small id="usernameHelp" class="form-text text-muted">닉네임은 가입 후 변경할 수 있습니다.</small>
+                                        <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="form-text text-danger"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">이메일</label>
+                                        <input id="email" type="email" th:field="*{email}" class="form-control"
+                                               placeholder="your@email.com" aria-describedby="emailHelp">
+                                        <small id="emailHelp" class="form-text text-muted">회원가입 인증메일을 확인하셔야 가입이 완료됩니다.</small>
+                                        <small th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="form-text text-danger"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">비밀번호</label>
+                                        <input id="password" type="password" th:field="*{password}" class="form-control"
+                                               placeholder="8자에서 50자 사이" aria-describedby="passwordHelp">
+                                        <small id="passwordHelp" class="form-text text-muted">비밀번호는 암호화되어 저장됩니다.</small>
+                                        <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="form-text text-danger"></small>
+                                    </div>
+                                    <br/>
+                                    <div class="form-group text-center">
+                                        <small id="submitHelp" class="form-text text-muted">
+                                            <a href="#">약관</a>에 동의하시면 가입하기 버튼을 클릭하세요.
+                                        </small>
+                                        <br/>
+                                        <button class="btn btn-dark" type="submit"
+                                                aria-describedby="submitHelp">가입하기
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
 
+                    </div>
+                </div>
             </section>
             <footer th:replace="/fragments/body/footer::base(~{::#footerParam})">
                 <span id="footerParam">footer param</span>

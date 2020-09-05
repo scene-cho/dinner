@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -51,7 +52,11 @@ public class AccountController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String loginPage(HttpServletRequest request) {
+        String referer = request.getHeader("Referer");
+        if (!referer.contains("login")) {
+            request.getSession().setAttribute("prev", referer);
+        }
         return LOGIN_VIEW;
     }
 }
