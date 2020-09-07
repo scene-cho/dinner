@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
     <head th:replace="layout/layout::head(~{::title},~{},~{})">
         <title>Title</title>
     </head>
+
     <body th:replace="layout/layout::body(_,~{::section},_)">
         <section>
-            Unexpected
+
+            <div th:text="${username}"></div>
+            <div th:text="${email}"></div>
+            <div th:if="${isOwner}" th:text="${password}"></div>
+
+            <a th:if="${isOwner}" href="#">수정하기</a>
+
         </section>
     </body>
 </html>

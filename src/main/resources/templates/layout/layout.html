@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+    <head th:fragment="head(title,links,scripts)">
+        <title th:replace="${title}"></title>
+        <th:block th:replace="layout/fragments::head"></th:block>
+        <link th:replace="${links}"/>
+        <script th:replace="${scripts}"></script>
+    </head>
+
+    <body th:fragment="body(headerParam,section,footerParam)" class="bg-light">
+        <nav th:replace="layout/fragments::navbar"></nav>
+        <div class="container">
+            <header th:replace="layout/fragments::header(${headerParam})"></header>
+            <div class="container py-5">
+                <section th:replace="${section}"></section>
+            </div>
+            <footer th:replace="layout/fragments::footer(${footerParam})"></footer>
+        </div>
+    </body>
+
+</html>

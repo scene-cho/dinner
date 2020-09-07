@@ -1,27 +1,16 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-    <head th:replace="fragments/head::base(~{::title},~{},~{})">
-        <title>Dinner</title>
+    <head th:replace="layout/layout::head(~{::title},~{},~{})">
+        <title>Title</title>
     </head>
 
-    <body class="bg-light">
-        <nav th:replace="fragments/body/nav::navbar"></nav>
-        <div class="container">
-            <header th:replace="fragments/body/header::base(~{::#headerParam})">
-                <span id="headerParam">header param</span>
-            </header>
-            <section class="container">
-
-                <article>
-                    <h1>Dinner</h1>
-                    <p>This is home of Dinner.</p>
-                </article>
-
-            </section>
-            <footer th:replace="fragments/body/footer::base(~{::#footerParam})">
-                <span id="footerParam">footer param</span>
-            </footer>
-        </div>
+    <body th:replace="layout/layout::body(_,~{::section},_)">
+        <section>
+            <article>
+                <h1>Dinner</h1>
+                <p>This is home of Dinner.</p>
+            </article>
+        </section>
     </body>
 </html>

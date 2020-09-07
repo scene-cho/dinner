@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="layout/layout::head(~{::title},~{::link},~{::script})">
+        <title>Title</title>
+        <link rel="stylesheet" href="/css#"/>
+        <script src="/js#"></script>
+    </head>
+    <body th:replace="layout/layout::body(~{::#headerParam},~{::section},~{::#footerParam})">
+        <th:block id="headerParam">headerParam</th:block>
+        <section>
+            content
+        </section>
+        <th:block id="footerParam">footerParam</th:block>
+    </body>
+</html>

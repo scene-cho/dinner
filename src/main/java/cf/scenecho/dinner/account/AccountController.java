@@ -20,7 +20,7 @@ public class AccountController {
     public static final String LOGIN_URL = "/login";
     public static final String PROFILE_URL = "/accounts/";
 
-    static final String DIR = "accounts/";
+    static final String DIR = "account/";
     static final String SIGNUP_VIEW = DIR + "signup";
     static final String LOGIN_VIEW = DIR + "login";
     static final String PROFILE_VIEW = DIR + "profile";

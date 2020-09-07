@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="layout/layout::head(~{::title},~{},~{})">
         <title>Title</title>
     </head>
-    <body>
-        DinnerException
-
+    <body th:replace="layout/layout::body(_,~{::section},_)">
+        <section>
+            DinnerException
+        </section>
     </body>
 </html>
