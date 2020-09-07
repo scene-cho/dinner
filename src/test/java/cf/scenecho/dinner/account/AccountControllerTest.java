@@ -73,7 +73,7 @@ class AccountControllerTest {
     @Test
     void signup_invalid_rejectAndSignupPage() throws Exception {
         mockMvc.perform(post(AccountController.SIGNUP_URL)
-                .param("username", "[notAllowed]")
+                .param("username", "<notAllowed>")
                 .param("email", "notEmail")
                 .param("password", "short")
                 .with(csrf())
@@ -88,7 +88,22 @@ class AccountControllerTest {
         assertThat(account).isNull();
     }
 
-    // TODO signup duplicate username
+    @Test
+    void signup_duplicated_rejectAndSignupPage() throws Exception {
+        accountFactory.createAndSaveAccount(USERNAME);
+
+        mockMvc.perform(post(AccountController.SIGNUP_URL)
+                .param("username", USERNAME)
+                .param("email", EMAIL)
+                .param("password", PASSWORD)
+                .with(csrf())
+        )
+                .andExpect(status().isOk())
+                .andExpect(view().name(AccountController.SIGNUP_VIEW))
+                .andExpect(model().attributeHasFieldErrors("signupForm", "username", "email"))
+                .andExpect(unauthenticated())
+        ;
+    }
 
     @Test
     void login_authenticated() throws Exception {

@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-    <head th:replace="/fragments/head::base(~{::title},~{::link},~{::script})">
+    <head th:replace="fragments/head::base(~{::title},~{::link},~{::script})">
         <title>Dinner</title>
         <link rel="stylesheet" href="/static/css#"/>
         <script src="/static/js#"></script>
     </head>
 
     <body class="bg-light">
-        <nav th:replace="/fragments/body/nav::navbar"></nav>
+        <nav th:replace="fragments/body/nav::navbar"></nav>
         <div class="container">
-            <header th:replace="/fragments/body/header::base(~{::#headerParam})">
+            <header th:replace="fragments/body/header::base(~{::#headerParam})">
                 <span id="headerParam">header param</span>
             </header>
             <section class="container">
@@ -46,7 +46,7 @@
                     </div>
                 </div>
             </section>
-            <footer th:replace="/fragments/body/footer::base(~{::#footerParam})">
+            <footer th:replace="fragments/body/footer::base(~{::#footerParam})">
                 <span id="footerParam">footer param</span>
             </footer>
         </div>
