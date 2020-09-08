@@ -2,70 +2,56 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-    <head>
+    <th:block th:fragment="head">
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
+        <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+        <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <link rel="stylesheet" href="/css/sidebar.css"/>
+        <script src="/js/sidebar.js"></script>
+    </th:block>
 
-        <th:block th:fragment="head">
-            <meta charset="UTF-8"/>
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-            <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
-            <script src="/node_modules/jquery/dist/jquery.min.js"></script>
-            <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-            <link rel="stylesheet" href="/css/sidebar.css"/>
-            <script src="/js/sidebar.js"></script>
-        </th:block>
 
-        <title>null</title>
+    <nav th:fragment="navbar" class="navbar">
+        <button type="button" class="btn btn-dark" onclick="openNav()">menu</button>
+        <nav th:replace="::sidebar">sidebar</nav>
 
-    </head>
+        <a href="/" class="navbar-brand">Dinner</a>
 
-    <nav>
-
-        <nav th:fragment="navbar" class="navbar">
-            <button type="button" class="btn btn-dark" onclick="openNav()">menu</button>
-            <nav th:replace="::sidebar">sidebar</nav>
-
-            <a href="/" class="navbar-brand">Dinner</a>
-
-            <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="btn btn-dark">login</a>
-            <div th:replace="::myPage"></div>
-        </nav>
-
-        <th:block>
-            <nav th:fragment="sidebar" id="sidebar" class="sidebar text-center">
-                <a class="close-btn" onclick="closeNav()" href="javascript:void(0)">x</a>
-                <a href="#">Magazines</a>
-                <ul>
-                    <li><a th:href="@{/magazines/palm-tree-canteen}"><small>Palm Tree Canteen</small></a></li>
-                    <li><a href="#"><small>Scene Cho's</small></a></li>
-                </ul>
-                <a href="#"><small>etc</small></a>
-                <hr/>
-                <a th:href="@{/about}">About</a>
-            </nav>
-
-            <div th:fragment="myPage" sec:authorize="isAuthenticated()" class="dropdown">
-                <button id="dropdownMenuButton" sec:authentication="name" class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                    <a th:href="@{/templates/account/{username}(username=${#authentication.name})}" class="dropdown-item">프로필</a>
-                    <form th:action="@{/logout}" method="post">
-                        <button type="submit" class="dropdown-item">로그아웃</button>
-                    </form>
-                </div>
-            </div>
-        </th:block>
-
+        <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="btn btn-dark">login</a>
+        <div th:replace="::myPage"></div>
     </nav>
 
-    <th:block>
+    <nav th:fragment="sidebar" id="sidebar" class="sidebar text-center">
+        <a class="close-btn" onclick="closeNav()" href="javascript:void(0)">x</a>
+        <a href="#">Magazines</a>
+        <ul>
+            <li><a th:href="@{/magazines/palm-tree-canteen}"><small>Palm Tree Canteen</small></a></li>
+            <li><a href="#"><small>Scene Cho's</small></a></li>
+        </ul>
+        <a href="#"><small>etc</small></a>
+        <hr/>
+        <a th:href="@{/about}">About</a>
+    </nav>
 
-        <header th:fragment="header(parameter)" class="text-center">
-            <small>This is header. Parameter:<th:block th:replace="${parameter}">common</th:block>.</small>
-        </header>
+    <div th:fragment="myPage" sec:authorize="isAuthenticated()" class="dropdown">
+        <button id="dropdownMenuButton" sec:authentication="name" class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+            <a th:href="@{/templates/account/{username}(username=${#authentication.name})}" class="dropdown-item">프로필</a>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="dropdown-item">로그아웃</button>
+            </form>
+        </div>
+    </div>
 
-        <footer th:fragment="footer(parameter)" class="text-center">
-            <small>This is footer. Parameter:<th:block th:replace="${parameter}">common</th:block>.</small>
-        </footer>
 
-    </th:block>
+    <header th:fragment="header(parameter)" class="text-center">
+        <small>This is header. Parameter:<th:block th:replace="${parameter}">common</th:block>.</small>
+    </header>
+
+    <footer th:fragment="footer(parameter)" class="text-center">
+        <small>This is footer. Parameter:<th:block th:replace="${parameter}">common</th:block>.</small>
+    </footer>
 
 </html>

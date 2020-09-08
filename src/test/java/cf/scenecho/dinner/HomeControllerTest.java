@@ -30,7 +30,7 @@ class HomeControllerTest {
 
                 .andExpect(xpath(XPATH_BODY + "nav").exists())
                 .andExpect(xpath(XPATH_BODY + "div/header").exists())
-                .andExpect(xpath(XPATH_BODY + "div/section").exists())
+                .andExpect(xpath(XPATH_BODY + "div/div/section").exists())
                 .andExpect(xpath(XPATH_BODY + "div/footer").exists())
         ;
     }
@@ -40,7 +40,7 @@ class HomeControllerTest {
         mockMvc.perform(get(HomeController.ABOUT_URL))
                 .andExpect(status().isOk())
                 .andExpect(view().name(HomeController.ABOUT_VIEW))
-                .andExpect(xpath(XPATH_BODY + "div/section/div/div/div/div/a").string("Signup"));
+                .andExpect(xpath(XPATH_BODY + "div/div/section/div/div/div/a").string("Signup"));
 
     }
 

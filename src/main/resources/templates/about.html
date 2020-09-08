@@ -6,8 +6,18 @@
     </head>
 
     <body th:replace="layout/layout::body(_,~{::section},_)">
-        <section>
-            About Dinner...
+        <section class="row justify-content-center">
+            <div class="col-lg-4">
+                <div class="row">
+                    About Dinner...
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <a href="/signup" class="btn btn-dark">Signup</a>
+                    </div>
+                </div>
+            </div>
         </section>
     </body>
 </html>
