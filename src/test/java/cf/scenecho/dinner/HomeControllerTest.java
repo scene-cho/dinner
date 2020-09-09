@@ -22,6 +22,7 @@ class HomeControllerTest {
         mockMvc.perform(get(HomeController.HOME_URL))
                 .andExpect(status().isOk())
                 .andExpect(view().name(HomeController.HOME_VIEW))
+                .andExpect(model().attributeExists("springProfile"))
                 .andExpect(header().string("Content-Type", "text/html;charset=UTF-8"))
 
                 .andExpect(xpath(XPATH_HEAD + "title").string("Dinner"))

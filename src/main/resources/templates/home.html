@@ -7,6 +7,7 @@
 
     <body th:replace="layout/layout::body(_,~{::section},_)">
         <section>
+            <div th:text="${springProfile}">spring profile</div>
             <article>
                 <h1>Dinner</h1>
                 <p>This is home of Dinner.</p>
