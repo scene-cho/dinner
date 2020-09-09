@@ -26,13 +26,13 @@ class HomeControllerTest {
                 .andExpect(header().string("Content-Type", "text/html;charset=UTF-8"))
 
                 .andExpect(xpath(XPATH_HEAD + "title").string("Dinner"))
-                .andExpect(xpath(XPATH_HEAD + "link").nodeCount(2))
+                .andExpect(xpath(XPATH_HEAD + "link").nodeCount(3))
                 .andExpect(xpath(XPATH_HEAD + "script").nodeCount(3))
 
                 .andExpect(xpath(XPATH_BODY + "nav").exists())
-                .andExpect(xpath(XPATH_BODY + "div/header").exists())
-                .andExpect(xpath(XPATH_BODY + "div/div/section").exists())
-                .andExpect(xpath(XPATH_BODY + "div/footer").exists())
+                .andExpect(xpath(XPATH_BODY + "header").exists())
+                .andExpect(xpath(XPATH_BODY + "div/section").exists())
+                .andExpect(xpath(XPATH_BODY + "footer").exists())
         ;
     }
 
@@ -41,7 +41,7 @@ class HomeControllerTest {
         mockMvc.perform(get(HomeController.ABOUT_URL))
                 .andExpect(status().isOk())
                 .andExpect(view().name(HomeController.ABOUT_VIEW))
-                .andExpect(xpath(XPATH_BODY + "div/div/section/div/div/div/a").string("Signup"));
+                .andExpect(xpath(XPATH_BODY + "div/section/div/div/div/a").string("Signup"));
 
     }
 

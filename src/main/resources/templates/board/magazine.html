@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="layout/layout::head(~{::title},~{},~{})">
-        <title>Title</title>
+    <head th:replace="layout/layout::head(~{::title},~{::link},~{})">
+        <title th:text="${magazineName}">Title</title>
+        <link rel="stylesheet" href="/css/magazine.css">
     </head>
     <body th:replace="layout/layout::body(_,~{::section},_)">
-        <section>
-            content
+        <section class="magazine">
+            <div>
+                <h1 th:text="${magazineName}">Magazine Name</h1>
+                <p>같은 주제에 대해 서로 다른 글을 씁니다. 조금 더 긴 설명은 이렇습니다.</p>
+            </div>
+            <ul class="row justify-content-center">
+                <li class="col-lg-5"><a th:href="@{/topics/CallMeByYourName}">Call Me By Your Name</a></li>
+                <li class="col-lg-5"><a href=#>가상의 명절을 그린 소설</a></li>
+                <li class="col-lg-5"><a href=#>짧은 제목</a></li>
+                <li class="col-lg-5"><a href=#>어쩌구저쩌구 별 이상한 소리를 하면서 엄청나게 긴 제목을 지으면 어떻게 할까? 글자 수 제한을 할 수 있는데 몇 자 정도가 적당하려나?</a></li>
+            </ul>
         </section>
     </body>
 </html>

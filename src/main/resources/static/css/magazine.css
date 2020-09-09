@@ -1,0 +1,31 @@
+.magazine h1 {
+    font-size: 30px;
+    font-weight: bold;
+    word-break: break-all;
+    padding: 10px;
+    text-align: center;
+}
+
+.magazine p {
+    text-align: center;
+}
+
+.magazine ul {
+    margin: auto;
+    padding: 10px;
+    width: 100%;
+    align-items: center;
+    align-content: center;
+
+}
+
+.magazine li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    text-align: center;
+    padding: 10px;
+    border: solid 3px gray;
+    margin: 10px;
+}

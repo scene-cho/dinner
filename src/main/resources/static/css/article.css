@@ -1,0 +1,43 @@
+.article #article-info {
+    padding: 10px;
+}
+
+.article #topic-name {
+    font-size: 20px;
+    word-break: break-all;
+    margin: auto;
+    width: 90%;
+    text-align: center;
+}
+
+.article #article-sub-info {
+    float: right;
+    font-size: 20px;
+}
+
+.article h1 {
+    font-size: 30px;
+    font-weight: bold;
+    word-break: break-all;
+    padding: 10px;
+    text-align: center;
+}
+
+.article h2 {
+    font-size: 25px;
+    font-weight: bold;
+    word-break: break-all;
+    padding: 10px;
+}
+
+.article h3 {
+    font-size: 20px;
+    font-weight: bold;
+    word-break: break-all;
+    padding: 10px;
+}
+
+.article p {
+    text-indent: 20px;
+}
+

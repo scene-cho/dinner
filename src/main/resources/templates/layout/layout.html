@@ -10,13 +10,11 @@
 
     <body th:fragment="body(headerParam,section,footerParam)" class="bg-light">
         <nav th:replace="layout/fragments::navbar"></nav>
-        <div class="container">
-            <header th:replace="layout/fragments::header(${headerParam})"></header>
-            <div class="container py-5">
-                <section th:replace="${section}"></section>
-            </div>
-            <footer th:replace="layout/fragments::footer(${footerParam})"></footer>
+        <header th:replace="layout/fragments::header(${headerParam})"></header>
+        <div class="container py-3">
+            <section th:replace="${section}"></section>
         </div>
+        <footer th:replace="layout/fragments::footer(${footerParam})"></footer>
     </body>
 
 </html>

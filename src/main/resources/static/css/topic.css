@@ -1,0 +1,62 @@
+.topic #topic-info {
+    padding: 10px;
+}
+
+.topic #magazine-name {
+    font-size: 20px;
+    word-break: break-all;
+    margin: auto;
+    width: 90%;
+    text-align: center;
+}
+
+.topic .article-card {
+    font-size: 20px;
+    padding: 15px;
+}
+
+.topic .article-info {
+    padding-bottom: 10px;
+}
+
+.topic .article-name {
+}
+
+.topic .article-sub-info {
+    float: right;
+}
+
+.topic .writer-name {
+}
+
+.topic .lastModified {
+}
+
+.topic h1 {
+    font-size: 30px;
+    font-weight: bold;
+    word-break: break-all;
+    padding: 10px;
+    text-align: center;
+}
+
+.topic p {
+    text-align: center;
+}
+
+.topic ul {
+    margin: auto;
+    padding: 0;
+    width: 100%;
+    align-items: center;
+    align-content: center;
+}
+
+.topic li {
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    padding: 10px 0;
+    margin: 10px 0;
+    border: solid 3px gray;
+}

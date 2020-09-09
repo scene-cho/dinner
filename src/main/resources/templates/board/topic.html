@@ -1,11 +1,58 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="layout/layout::head(~{::title},~{},~{})">
-        <title>Title</title>
+    <head th:replace="layout/layout::head(~{::title},~{::link},~{})">
+        <title th:text="${topicName}">Title</title>
+        <link rel="stylesheet" href="/css/topic.css">
     </head>
     <body th:replace="layout/layout::body(_,~{::section},_)">
-        <section>
-            content
+        <section class="topic">
+            <div id="topic-info">
+                <div id="magazine-name"><a th:href="@{/magazines/PalmTreeCanteen}">PalmTreeCanteen</a></div>
+                <h1 th:text="${topicName}">Topic Name</h1>
+                <p>토픽에도 설명이 필요하겠지?</p>
+            </div>
+            <ul>
+                <li class="article-card">
+                    <div class="article-info justify-content-end">
+                        <a class="article-name" th:href="@{/articles/아티클의제목}">아티클의 제목</a>
+                        <span class="article-sub-info">
+                            <a class="writer-name" th:href="@{/accounts/username}">도언</a>
+                            <span class="lastModified">20200101</span>
+                        </span>
+                    </div>
+                    <small>미리보기는 어떻게 해야할지 아직은 기술적으로 감이 잘 안오기는 합니다만, 어떻게든 되기는 될 겁니당.</small>
+                </li>
+                <li class="article-card">
+                    <div class="article-info justify-content-end">
+                        <a class="article-name">내 이름을 불러줘.</a>
+                        <span class="article-sub-info">
+                            <a class="writer-name" th:href="@{/accounts/username}">아이유</a>
+                            <span class="lastModified">20200101</span>
+                        </span>
+                    </div>
+                    <small>가나다라마바사 자차카타파하. 이런 거 채우는 게 가장 고민스러운데, 무슨 말을 하면 좋을까. 아이유 가사를 채워도 되기는 할텐데, 가사를 틀리기는 싫고, 그렇다고 찾아보기는 귀찮고, 참 뭘 해야 할지 모르겠네.</small>
+                </li>
+                <li class="article-card">
+                    <div class="article-info justify-content-end">
+                        <a class="article-name">여기에도 마찬가지로 어쩌구저쩌구 별 이상한 소리를 하면서 엄청나게 긴 제목을 지으면 어떻게 할까? 글자 수 제한을 할 수 있는데 몇 자 정도가 적당하려나?</a>
+                        <span class="article-sub-info">
+                            <a class="writer-name" th:href="@{/accounts/username}">아이유</a>
+                            <span class="lastModified">20200101</span>
+                        </span>
+                    </div>
+                    <small>가나다라마바사 자차카타파하. 이런 거 채우는 게 가장 고민스러운데, 무슨 말을 하면 좋을까. 아이유 가사를 채워도 되기는 할텐데, 가사를 틀리기는 싫고, 그렇다고 찾아보기는 귀찮고, 참 뭘 해야 할지 모르겠네.</small>
+                </li>
+                <li class="article-card">
+                    <div class="article-info justify-content-end">
+                        <a class="article-name">정상적인 제목</a>
+                        <span class="article-sub-info">
+                            <a class="writer-name" th:href="@{/accounts/username}">한편닉네임이미친듯이긴경우에는이렇습니다.</a>
+                            <span class="lastModified">20200101</span>
+                        </span>
+                    </div>
+                    <small>가나다라마바사 자차카타파하. 이런 거 채우는 게 가장 고민스러운데, 무슨 말을 하면 좋을까. 아이유 가사를 채워도 되기는 할텐데, 가사를 틀리기는 싫고, 그렇다고 찾아보기는 귀찮고, 참 뭘 해야 할지 모르겠네.</small>
+                </li>
+            </ul>
         </section>
     </body>
 </html>
