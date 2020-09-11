@@ -1,0 +1,8 @@
+version: "3"
+services:
+  postgres-server:
+    image: "postgres"
+  dinner:
+    build: .
+    ports:
+      - "80:8080"

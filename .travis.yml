@@ -1,0 +1,27 @@
+language: java
+jdk: openjdk11
+
+branches:
+  only:
+    - master
+    - dev
+
+cache:
+  directories:
+    - $HOME/.m2
+
+before_install:
+  - echo "travis_postgres container starting..."
+  - docker run --name travis_postgres -p 5432:5432 -e POSTGRES_DB=ci_db -e POSTGRES_USER=ci_user -e POSTGRES_PASSWORD=ci_password -d postgres
+  - echo "travis_postgres container successfully started.
+
+script:
+  - ./mvnw clean package -B
+
+after_success:
+  - docker build -t dinner -f Dockerfile.dev .
+
+notifications:
+  email:
+    recipients:
+      - scene_cho@naver.com
