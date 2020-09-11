@@ -2,12 +2,14 @@ package cf.scenecho.dinner.account;
 
 import cf.scenecho.dinner.HomeController;
 import cf.scenecho.dinner.exception.ExceptionAdvice;
+import cf.scenecho.dinner.infra.AbstractContainerBaseTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,7 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AccountControllerTest {
+@ActiveProfiles("test")
+class AccountControllerTest extends AbstractContainerBaseTest {
 
     static final String USERNAME = "scene";
     static final String EMAIL = USERNAME + "@email.com";
